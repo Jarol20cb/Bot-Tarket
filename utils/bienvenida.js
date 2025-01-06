@@ -13,7 +13,8 @@ function getRandomColor() {
 module.exports = {
   bienvenida: async (member) => {
     try {
-      const bienvenidaChannel = member.guild.channels.cache.find(channel => channel.name === 'bienvenida');
+      // Reemplaza 'ID_DEL_CANAL' con el ID real del canal
+      const bienvenidaChannel = member.guild.channels.cache.get('1325525865269825537');
 
       if (!bienvenidaChannel) {
         console.error('No se encontró el canal de bienvenida.');
