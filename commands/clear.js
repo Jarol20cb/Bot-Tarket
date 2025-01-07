@@ -3,7 +3,7 @@ const { PermissionsBitField } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('clear')
+    .setName('clear-messages')
     .setDescription('Elimina una cantidad específica de mensajes recientes.')
     .addIntegerOption(option =>
       option.setName('cantidad')

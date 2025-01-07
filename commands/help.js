@@ -3,19 +3,19 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('help')
+    .setName('help-commands')
     .setDescription('Muestra todos los comandos disponibles en el servidor.'),
 
   async execute(interaction) {
     // Definir los comandos
     const commands = [
-      { name: '/help', description: 'Muestra todos los comandos disponibles en el servidor.' },
+      { name: '/help-commands', description: 'Muestra todos los comandos disponibles en el servidor.' },
       { name: '/intranet', description: 'Muestra un mensaje con un botón para acceder a la intranet de la empresa.' },
       { name: '/serverinfo', description: 'Muestra información básica sobre este servidor.' },
-      { name: '/disconnectAll', description: 'Desconecta a todos los miembros de todos los canales de voz.' },
-      { name: '/bringMember', description: 'Mueve a un usuario específico a otro canal de voz.' },
+      { name: '/desconectar-todos', description: 'Desconecta a todos los miembros de todos los canales de voz.' },
+      { name: '/mover-miembro', description: 'Mueve a un usuario específico a otro canal de voz.' },
       { name: '/clear', description: 'Elimina una cantidad específica de mensajes recientes del canal.' },
-      { name: '/generar-perfil', description: 'Genera una imagen de perfil personalizada.' }, // Nuevo comando agregado
+      { name: '/generar-perfil', description: 'Genera una imagen de perfil personalizada.' },
     ];
 
     // Crear un embed con la lista de comandos

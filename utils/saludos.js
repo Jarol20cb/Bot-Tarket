@@ -11,7 +11,7 @@ async function saludoDeTiempo(channel, user) {
   const saludo = obtenerSaludo();
   try {
     const mensaje = await channel.send(`👋 ${saludo} ¡Hola, ${user.username}! Bienvenido al canal **${channel.name}**.`);
-    setTimeout(() => mensaje.delete().catch(console.error), 10000); // Eliminar después de 10 segundos
+    setTimeout(() => mensaje.delete().catch(console.error), 4000); // Eliminar después de 10 segundos
   } catch (error) {
     console.error("Error al enviar el saludo de tiempo: ", error);
   }
@@ -21,7 +21,7 @@ async function saludoDeTiempo(channel, user) {
 async function saludoDeCanal(channel, user) {
   try {
     const mensaje = await channel.send(`👋 ¡Hola, ${user.username}! Bienvenido al canal **${channel.name}**.`);
-    setTimeout(() => mensaje.delete().catch(console.error), 10000); // Eliminar después de 10 segundos
+    setTimeout(() => mensaje.delete().catch(console.error), 4000); // Eliminar después de 4 segundos
   } catch (error) {
     console.error("Error al saludar al entrar al canal: ", error);
   }
@@ -31,7 +31,7 @@ async function saludoDeCanal(channel, user) {
 async function despedidaDeMiembro(channel, user) {
   try {
     const mensaje = await channel.send(`👋 ¡Adiós, ${user.username}! ¡Te extrañaremos en **${channel.guild.name}**!`);
-    setTimeout(() => mensaje.delete().catch(console.error), 10000); // Eliminar después de 10 segundos
+    setTimeout(() => mensaje.delete().catch(console.error), 4000); // Eliminar después de 4 segundos
   } catch (error) {
     console.error("Error al enviar la despedida: ", error);
   }
@@ -44,13 +44,13 @@ function EventoSaludo(client) {
   // Evento cuando un miembro entra al servidor
   client.on('guildMemberAdd', async (member) => {
     const channel = member.guild.systemChannel;
-    if (channel) await saludoDeTiempo(channel, member.user); // Saludo de la hora (mañana/tarde/noche)
+    if (channel) await saludoDeTiempo(channel, member.user);
   });
 
   // Evento cuando un miembro deja el servidor
   client.on('guildMemberRemove', async (member) => {
     const channel = member.guild.systemChannel;
-    if (channel) await despedidaDeMiembro(channel, member.user); // Despedida
+    if (channel) await despedidaDeMiembro(channel, member.user);
   });
 
   // Evento cuando un miembro entra o cambia de canal de voz
@@ -64,7 +64,7 @@ function EventoSaludo(client) {
         await saludoDeTiempo(channel, member.user);
         saludosRealizados.add(member.id);
       } else {
-        await saludoDeCanal(channel, member.user); // Saludo al cambiar de canal
+        await saludoDeCanal(channel, member.user);
       }
     }
 

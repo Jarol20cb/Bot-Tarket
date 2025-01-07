@@ -2,7 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('bringmember')
+    .setName('mover-miembro')
     .setDescription('Trae a un miembro de otro canal de voz al canal donde estás.')
     .addUserOption(option => option.setName('miembro').setDescription('El miembro que deseas traer').setRequired(true)),
 
