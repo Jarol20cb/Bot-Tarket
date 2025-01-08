@@ -14,7 +14,7 @@ module.exports = {
   bienvenida: async (member) => {
     try {
       // Reemplaza 'ID_DEL_CANAL' con el ID real del canal
-      const bienvenidaChannel = member.guild.channels.cache.get('1325525865269825537');
+      const bienvenidaChannel = member.guild.channels.cache.get('1326615383985229864');
 
       if (!bienvenidaChannel) {
         console.error('No se encontró el canal de bienvenida.');

@@ -1,5 +1,6 @@
 const { AttachmentBuilder } = require('discord.js');
 const path = require('path');
+const rolesConfig = require('../config/rolesConfig');
 
 // Función para saludar a un administrador o moderador
 async function saludoDeAdministrador(client) {
@@ -7,8 +8,10 @@ async function saludoDeAdministrador(client) {
     const member = newState.member;
 
     if (member) {
-      // Verifica si el miembro tiene el rol de 'Administrador' o 'Moderador'
-      if (member.roles.cache.some(role => role.name === 'Administrador') || member.roles.cache.some(role => role.name === 'Moderador')) {
+      // Verifica si el miembro tiene el rol de 'Administrador' o 'Moderador' usando los roles de la configuración
+      if (member.roles.cache.some(role => role.name === rolesConfig.rol_1) || 
+          member.roles.cache.some(role => role.name === rolesConfig.rol_2)) {
+
         const channel = newState.channel;
 
         if (channel) {

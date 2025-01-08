@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const rolesConfig = require('../config/rolesConfig');   // Importa el archivo de roles
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -7,7 +8,8 @@ module.exports = {
     .addUserOption(option => option.setName('miembro').setDescription('El miembro que deseas traer').setRequired(true)),
 
   async execute(interaction) {
-    const rolesPermisos = ['Administrador', 'Moderador'];
+    // Usa rolesPermisos desde el archivo de rolesConfig
+    const rolesPermisos = rolesConfig.rol_1;  // Aquí puedes ajustar según el rol que necesites
     const userRoles = interaction.member.roles.cache.map(role => role.name);
     const tienePermiso = rolesPermisos.some(role => userRoles.includes(role));
 

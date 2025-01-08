@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const rolesConfig = require('../config/rolesConfig'); // Importa el archivo de roles
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,7 +10,12 @@ module.exports = {
             await interaction.deferReply();
 
             const member = interaction.member;
-            if (!member.roles.cache.some(role => role.name === 'Administrador' || role.name === 'Moderador')) {
+            // Verifica si el miembro tiene el rol de 'Admin' o 'Moderador' desde rolesConfig
+            const rolesPermisos = [rolesConfig.rol_1, rolesConfig.rol_2]; // Puedes agregar más roles aquí
+            const userRoles = member.roles.cache.map(role => role.name);
+            const tienePermiso = rolesPermisos.some(role => userRoles.includes(role));
+
+            if (!tienePermiso) {
                 return interaction.editReply({
                     content: '🚫 **Acción Denegada**: No tienes permisos para usar este comando.',
                     embeds: [],
