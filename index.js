@@ -1,5 +1,5 @@
 const { Client, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config/config.json');
+const { token } = require('./config/config.js');
 const { EventoSaludo } = require('./utils/saludos');
 const { bienvenida } = require('./utils/bienvenida');
 const commandHandler = require('./commands/handlers/commandHandler');
@@ -15,8 +15,20 @@ const client = new Client({
   ]
 });
 
+// Función para formatear el mensaje de inicio con un diseño bonito
+function logBotStartup() {
+  const botName = client.user.tag;
+  const message = `${botName} ha sido conectado exitosamente.`;
+  const borderLength = message.length + 4;
+  const border = '═'.repeat(borderLength);
+
+  console.log(`╔${border}╗`);
+  console.log(`║  ${message}  ║`);
+  console.log(`╚${border}╝`);
+}
+
 client.once('ready', () => {
-  console.log(`${client.user.tag} está conectado y listo para funcionar.`);
+  logBotStartup();
 });
 
 commandHandler(client);

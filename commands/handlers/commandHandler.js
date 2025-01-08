@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { token, guildId, clientId } = require('../../config/config.json');
+const { token, guildId, clientId } = require('../../config/config.js');
 
 module.exports = async (client) => {
   client.commands = new Map();

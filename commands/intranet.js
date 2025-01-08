@@ -1,40 +1,98 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder } = require('discord.js');
 
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('intranet')
-    .setDescription('Envía un mensaje con un botón para acceder a la intranet'),
+    data: new SlashCommandBuilder()
+        .setName('messageall')
+        .setDescription('Envía un mensaje a los chats asociados a los canales de voz.')
+        .addStringOption(option =>
+            option.setName('mensaje')
+                .setDescription('El mensaje que quieres enviar.')
+                .setRequired(true)),
 
-  async execute(interaction) {
-    const enlace = 'https://tarket.site'; // Cambia esto por el enlace deseado
+    async execute(interaction) {
+        try {
+            await interaction.reply({ content: 'Comenzando a enviar mensajes...', ephemeral: true });
 
-    // Obtener el logo del servidor
-    const serverIconUrl = interaction.guild.iconURL() || 'https://default-url.com/default-logo.png'; // URL del logo del servidor
+            const mensaje = interaction.options.getString('mensaje');
+            const guild = interaction.guild;
 
-    // Crear un embed con un diseño profesional y atractivo
-    const embed = new EmbedBuilder()
-      .setTitle('🔑 Acceso Exclusivo a la Intranet')
-      .setDescription('¡Bienvenido! Haz clic en el botón de abajo para acceder a nuestra intranet.')
-      .setColor('#00A4CC') // Color azul más brillante
-      .setThumbnail(serverIconUrl) // Usar el logo del servidor
-      .setFooter({ text: 'Tarket - Soluciones PYME', iconURL: serverIconUrl }) // Usar el logo del servidor en el pie de página
-      .setTimestamp();
+            if (!guild) {
+                return interaction.editReply('Este comando solo funciona en servidores.');
+            }
 
-    // Crear un botón con estilo atractivo
-    const boton = new ButtonBuilder()
-      .setLabel('Ir a la Intranet')
-      .setStyle(ButtonStyle.Link)
-      .setURL(enlace);
+            // Mostrar todos los canales y su tipo
+            console.log('Todos los canales disponibles:');
+            guild.channels.cache.forEach(canal => {
+                console.log(`Canal: ${canal.name}, Tipo: ${canal.type}`);
+            });
 
-    // Crear una fila de acción para incluir el botón
-    const fila = new ActionRowBuilder().addComponents(boton);
+            const canales = guild.channels.cache;
+            const canalesDeVoz = [];
+            const canalesDeTexto = [];
 
-    // Enviar el mensaje al canal donde se ejecutó el comando
-    await interaction.reply({
-      embeds: [embed],
-      components: [fila],
-      ephemeral: false, // Mostrar el mensaje a todos en el canal
-    });
-  },
+            // Clasificar los canales y ver los tipos
+            canales.forEach(canal => {
+                if (canal.type === 'GUILD_VOICE') {
+                    canalesDeVoz.push(canal);
+                } else if (canal.type === 'GUILD_TEXT') {
+                    canalesDeTexto.push(canal);
+                }
+            });
+
+            if (canalesDeVoz.length > 0) {
+                console.log('Canales de voz encontrados:');
+                canalesDeVoz.forEach(canal => console.log(`Canal de voz: ${canal.name}`));
+            } else {
+                console.log('No se encontraron canales de voz.');
+            }
+
+            if (canalesDeTexto.length > 0) {
+                console.log('Canales de texto encontrados:');
+                canalesDeTexto.forEach(canal => console.log(`Canal de texto: ${canal.name}`));
+            } else {
+                console.log('No se encontraron canales de texto.');
+            }
+
+            if (canalesDeVoz.length === 0) {
+                await interaction.editReply('No se encontraron canales de voz.');
+                return;
+            }
+
+            if (canalesDeTexto.length === 0) {
+                await interaction.editReply('No se encontraron canales de texto.');
+                return;
+            }
+
+            let enviados = 0;
+
+            // Enviar mensaje a los canales de texto correspondientes
+            for (const canalVoz of canalesDeVoz) {
+                const canalTexto = canalesDeTexto.find(c => c.name === canalVoz.name);
+                if (canalTexto) {
+                    try {
+                        await canalTexto.send(`Mensaje desde el canal de voz **${canalVoz.name}**: ${mensaje}`);
+                        enviados++;
+                    } catch (error) {
+                        console.error(`Error al enviar mensaje al canal de texto ${canalTexto.name}:`, error);
+                    }
+                } else {
+                    console.log(`No se encontró canal de texto para el canal de voz: ${canalVoz.name}`);
+                }
+            }
+
+            if (enviados > 0) {
+                await interaction.editReply(`Se enviaron mensajes a los chats de ${enviados} canales de voz.`);
+            } else {
+                await interaction.editReply('No se encontraron canales de texto asociados a los canales de voz.');
+            }
+
+        } catch (error) {
+            console.error('Error en la ejecución del comando:', error);
+            if (!interaction.replied) {
+                await interaction.reply('Hubo un error al ejecutar el comando.');
+            } else {
+                await interaction.followUp('Hubo un error al intentar enviar el mensaje.');
+            }
+        }
+    },
 };

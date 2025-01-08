@@ -14,7 +14,7 @@ module.exports = {
       { name: '/serverinfo', description: 'Muestra información básica sobre este servidor.' },
       { name: '/desconectar-todos', description: 'Desconecta a todos los miembros de todos los canales de voz.' },
       { name: '/mover-miembro', description: 'Mueve a un usuario específico a otro canal de voz.' },
-      { name: '/clear', description: 'Elimina una cantidad específica de mensajes recientes del canal.' },
+      { name: '/clear-messages', description: 'Elimina una cantidad específica de mensajes recientes del canal.' },
       { name: '/generar-perfil', description: 'Genera una imagen de perfil personalizada.' },
     ];
 
