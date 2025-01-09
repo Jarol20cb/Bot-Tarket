@@ -4,6 +4,7 @@ const { EventoSaludo } = require('./utils/saludos');
 const { bienvenida } = require('./utils/bienvenida');
 const commandHandler = require('./commands/handlers/commandHandler');
 const { saludoDeAdministrador } = require('./utils/admins.js');
+const { registrarConexiones } = require('./utils/conexiones.js')
 
 const client = new Client({
   intents: [
@@ -34,6 +35,7 @@ client.once('ready', () => {
 commandHandler(client);
 EventoSaludo(client);
 saludoDeAdministrador(client);
+registrarConexiones(client);
 
 client.on('guildMemberAdd', (member) => {
   bienvenida(member);
